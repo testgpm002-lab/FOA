@@ -1,57 +1,74 @@
-class Node:
-def init (self,data):
-self.data = data self.left = None self.right = None
+class Node: 
+	def __init__(self, key): 
+		self.key = key 
+		self.left = None
+		self.right = None
+def inorder(root): 
+	if root is not None: 
+		inorder(root.left) 
+		print(root.key), 
+		inorder(root.right)  
+def insert( node, key): 
+	if node is None: 
+		return Node(key) 
+	if key < node.key: 
+		node.left = insert(node.left, key) 
+	else: 
+		node.right = insert(node.right, key) 
+	return node 
 
-# Inorder traversal of a binary tree def inorder(temp):
-if(not temp):
-return inorder(temp.left) print(temp.data, end = " ") inorder(temp.right)
+def minValueNode( node): 
+	current = node 
+	while(current.left is not None): 
+		current = current.left 
+	return current
+    
+def deleteNode(root, key): 
+	if root is None: 
+		return root 
+	if key < root.key: 
+		root.left = deleteNode(root.left, key) 
+	elif(key > root.key): 
+		root.right = deleteNode(root.right, key) 
+	else: 
+		if root.left is None : 
+			temp = root.right 
+			root = None
+			return temp 
+			
+		elif root.right is None : 
+			temp = root.left 
+			root = None
+			return temp  
+		temp = minValueNode(root.right) 
+		root.key = temp.key  
+		root.right = deleteNode(root.right , temp.key) 
+	return root 
 
-# function to delete the given deepest node (d_node) in binary tree def deleteDeepest(root,d_node):
-q = []
-q.append(root) while(len(q)):
-temp = q.pop(0) if temp is d_node:
-temp = None return
-if temp.right:
-if temp.right is d_node:
-temp.right = None return
- 
-else:
+root = None
+root = insert(root, 50) 
+root = insert(root, 30) 
+root = insert(root, 20) 
+root = insert(root, 40) 
+root = insert(root, 70) 
+root = insert(root, 60) 
+root = insert(root, 80) 
 
-if temp.left:
- 
+print("Inorder traversal of the given tree")
+inorder(root) 
 
-q.append(temp.right)
- 
-if temp.left is d_node:
-temp.left = None return
-else:
-q.append(temp.left)
+print ("\nDelete 20")
+root = deleteNode(root, 20) 
+print("Inorder traversal of the modified tree")
+inorder(root) 
 
-# function to delete element in binary tree def deletion(root, key):
-if root == None :
-return None
-if root.left == None and root.right == None: if root.key == key :
-return None
-else :
-return root
-key_node = None q = []
-q.append(root)
- 
-while(len(q)):
-temp = q.pop(0)
-if temp.data == key:
-key_node = temp if temp.left:
-q.append(temp.left)          if temp.right:
-q.append(temp.right)
-if key_node :
-x = temp.data deleteDeepest(root,temp) key_node.data = x
-return root
+print ("\nDelete 30")
+root = deleteNode(root, 30) 
+print ("Inorder traversal of the modified tree")
+inorder(root) 
 
-# Driver code
-if name ==' main ':
-root = Node(10) root.left = Node(11) root.left.left = Node(7)
-root.left.right = Node(12) root.right = Node(9) root.right.left = Node(15) root.right.right = Node(8)
-print("The tree before the deletion:") inorder(root)
-key = 11
-root = deletion(root, key) print()
-print("The tree after the deletion;") inorder(root)
+print ("\nDelete 50")
+root = deleteNode(root, 50)
+print ("Inorder traversal of the modified tree")
+inorder(root) 
+
